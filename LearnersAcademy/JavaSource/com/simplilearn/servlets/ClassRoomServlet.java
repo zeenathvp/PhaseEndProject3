@@ -35,9 +35,14 @@ public class ClassRoomServlet extends HttpServlet {
 	private void createClassRoom(HttpServletRequest request, HttpServletResponse response) {
 		try {
 			String className = request.getParameter("className");
-			Classroom classroom = new Classroom(className);		
-			classroomdao.createClassRoom(classroom);		
-			getClassRoom(request,response);
+			if(className.isEmpty()) {
+				request.getSession(false).setAttribute("message","One of the input parameter is missing");
+				response.sendRedirect("pages/Welcome.jsp");
+			}else {
+				Classroom classroom = new Classroom(className);		
+				classroomdao.createClassRoom(classroom);		
+				getClassRoom(request,response);
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		} 

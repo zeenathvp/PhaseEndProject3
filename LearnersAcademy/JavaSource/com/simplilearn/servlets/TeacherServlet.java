@@ -34,9 +34,14 @@ public class TeacherServlet extends HttpServlet {
 	private void createTeacher(HttpServletRequest request, HttpServletResponse response) {
 		try {
 			String teacherName = request.getParameter("teacherName");
-			Teacher teacher = new Teacher(teacherName);		
-			teacherDao.createSubject(teacher);		
-			getTeachers(request,response);
+			if(teacherName.isEmpty()) {
+				request.getSession(false).setAttribute("message","One of the input parameter is missing");
+				response.sendRedirect("pages/Welcome.jsp");
+			}else {
+				Teacher teacher = new Teacher(teacherName);		
+				teacherDao.createSubject(teacher);		
+				getTeachers(request,response);
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		} 

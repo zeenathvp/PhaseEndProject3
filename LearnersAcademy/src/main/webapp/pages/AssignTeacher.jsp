@@ -17,6 +17,8 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Assign Teachers</title>
 </head>
+<h2><a href="Welcome.jsp">Home</a></h2>
+<h2><a href="/LearnersAcademy/logoutServlet">Logout</a></h2>
 <% 
 	List<Class_Subject_Teacher> assignmentList = new AssignmentDao().getAssignmentList();
 	List<Teacher> TeacherList = new TeacherDao().getTeachers();

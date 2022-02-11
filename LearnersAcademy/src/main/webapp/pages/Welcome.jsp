@@ -10,7 +10,7 @@
 	<h2><a href="/LearnersAcademy/logoutServlet">Logout</a></h2>
 	<center>
 		<% if(request.getSession(false).getAttribute("message") != null && ! request.getSession(false).getAttribute("message").toString().isEmpty()) {%>
-			<p style="color:red"><%= request.getSession(false).getAttribute("message") %></p>	
+			<h2><p style="color:red"><%= request.getSession(false).getAttribute("message") %></p></h2>
 		<%
 			request.getSession(false).removeAttribute("message");
 			} 

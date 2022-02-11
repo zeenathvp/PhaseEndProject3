@@ -12,6 +12,8 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Assign Subject To Classes</title>
 </head>
+<h2><a href="Welcome.jsp">Home</a></h2>
+<h2><a href="/LearnersAcademy/logoutServlet">Logout</a></h2>
 <% 
 	List<Classroom> classRoomList = new ClassroomDao().getClassrooms();
 	List<Subject> SubjectList = new SubjectDao().getSubjects();

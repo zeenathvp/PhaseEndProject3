@@ -33,9 +33,14 @@ public class SubjectServlet extends HttpServlet {
 	private void createSubject(HttpServletRequest request, HttpServletResponse response) {
 		try {
 			String subjectName = request.getParameter("subjectName");
-			Subject subject = new Subject(subjectName);		
-			subjectDao.createSubject(subject);		
-			getSubjects(request,response);
+			if(subjectName.isEmpty()) {
+				request.getSession(false).setAttribute("message","One of the input parameter is missing");
+				response.sendRedirect("pages/Welcome.jsp");
+			}else {
+				Subject subject = new Subject(subjectName);		
+				subjectDao.createSubject(subject);		
+				getSubjects(request,response);
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		} 

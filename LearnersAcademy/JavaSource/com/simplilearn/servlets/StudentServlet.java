@@ -34,12 +34,20 @@ public class StudentServlet extends HttpServlet {
 		try {
 			String stdName = request.getParameter("stdName");
 			String stdEmail = request.getParameter("stdEmail");
-			int classId = Integer.parseInt(request.getParameter("className"));  
+			int classId=0;
+			if(!request.getParameter("className").equals("select one")) {
+				classId = Integer.parseInt(request.getParameter("className"));  
+			}
 			
-			Classroom classroom =  new Classroom(classId);
-			Student student = new Student(stdName,stdEmail,classroom);	
-			studentDao.saveStudent(student);		
-			getStudents(request,response);
+			if(stdName.isEmpty() || stdEmail.isEmpty() || classId==0) {
+				request.getSession(false).setAttribute("message","One of the input parameter is missing");
+				response.sendRedirect("pages/Welcome.jsp");
+			}else {			
+				Classroom classroom =  new Classroom(classId);
+				Student student = new Student(stdName,stdEmail,classroom);	
+				studentDao.saveStudent(student);		
+				getStudents(request,response);
+			}
 			
 		} catch (Exception e) {
 			e.printStackTrace();

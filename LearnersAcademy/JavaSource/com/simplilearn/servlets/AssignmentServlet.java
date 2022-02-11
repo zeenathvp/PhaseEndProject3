@@ -1,6 +1,8 @@
 package com.simplilearn.servlets;
 
 import java.io.IOException;
+import java.util.List;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -38,21 +40,36 @@ public class AssignmentServlet extends HttpServlet {
 	}
 
 	private void assignClassSubject(HttpServletRequest request, HttpServletResponse response)  {
-		try {
-			int subjectId = Integer.parseInt(request.getParameter("subject"));  
-			int classId = Integer.parseInt(request.getParameter("classroom"));  
+		try {			
+			int subjectId=0;
+			if(!request.getParameter("subject").equals("select one")) {
+				subjectId = Integer.parseInt(request.getParameter("subject"));  
+			}
+			int classId=0;
+			if(!request.getParameter("classroom").equals("select one")) {
+				classId = Integer.parseInt(request.getParameter("classroom"));  
+			};
+			List<Class_Subject_Teacher> AssignmentList = assignmentDao.getAssignmentById(subjectId, classId);
 			
-			String subjectName = subjectDao.getSubjectById(subjectId).getSubjectName();
-			String className = classRoomDao.getClassById(classId).getClassName();
-			
-			Classroom classroom = new Classroom(classId,className);			
-			Subject subject = new Subject(subjectId,subjectName);
-			
-			Class_Subject_Teacher classSubject = new Class_Subject_Teacher(subject,classroom);
-			assignmentDao.assignclassSubjectTeacher(classSubject);
-			
-			request.getSession(false).setAttribute("message","Subject Assigned to Class");
-			response.sendRedirect("pages/Welcome.jsp");
+			if(subjectId==0 || classId==0) {
+				request.getSession(false).setAttribute("message","One of the input parameter is missing");
+				response.sendRedirect("pages/Welcome.jsp");
+			} else if(AssignmentList.size() != 0){
+				request.getSession(false).setAttribute("message","The Assignment is already done !!!");
+				response.sendRedirect("pages/Welcome.jsp");
+			}else {
+				String subjectName = subjectDao.getSubjectById(subjectId).getSubjectName();
+				String className = classRoomDao.getClassById(classId).getClassName();
+				
+				Classroom classroom = new Classroom(classId,className);			
+				Subject subject = new Subject(subjectId,subjectName);
+				
+				Class_Subject_Teacher classSubject = new Class_Subject_Teacher(subject,classroom);
+				assignmentDao.assignclassSubjectTeacher(classSubject);
+				
+				request.getSession(false).setAttribute("message","Subject Assigned to Class");
+				response.sendRedirect("pages/Welcome.jsp");
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
